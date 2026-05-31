@@ -19,9 +19,11 @@ const ShopCreate = () => {
     const [avatar, setAvatar] = useState();
     const [password, setPassword] = useState("");
     const [visible, setVisible] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
 
         const config = { headers: { "Content-Type": "application/json" } };
 
@@ -41,15 +43,19 @@ const ShopCreate = () => {
                 setName("");
                 setEmail("");
                 setPassword("");
-                setZipCode();
+                setZipCode("");
                 setAddress("");
-                setPhoneNumber();
+                setPhoneNumber("");
+                setLoading(false);
+                setTimeout(() => {
+                    navigate("/shop-login");
+                    window.location.reload();
+                }, 2000);
             })
             .catch((error) => {
-                toast.error(error.response.data.message);
+                setLoading(false);
+                toast.error(error.response?.data?.message || "Connection timed out. Please try again.");
             });
-        navigate("/shop-login")
-        window.location.reload();
     }
 
     return (
@@ -201,9 +207,20 @@ const ShopCreate = () => {
                         <div>
                             <button
                                 type='submit'
-                                className='group relative w-full h-[44px] flex justify-center items-center py-2.5 px-4 border border-transparent text-sm font-semibold rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 transition duration-300 shadow-sm hover:shadow active:scale-95 cursor-pointer'
+                                disabled={loading}
+                                className={`group relative w-full h-[44px] flex justify-center items-center py-2.5 px-4 border border-transparent text-sm font-semibold rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 transition duration-300 shadow-sm hover:shadow active:scale-95 cursor-pointer ${loading ? "opacity-75 cursor-not-allowed" : ""}`}
                             >
-                                Submit
+                                {loading ? (
+                                    <div className="flex items-center">
+                                        <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                        </svg>
+                                        Registering Seller Account...
+                                    </div>
+                                ) : (
+                                    "Submit"
+                                )}
                             </button>
                         </div>
 
