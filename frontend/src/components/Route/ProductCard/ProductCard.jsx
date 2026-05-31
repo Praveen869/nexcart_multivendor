@@ -24,8 +24,6 @@ const ProductCard = ({ data, isEvent }) => {
     const [open, setOpen] = useState(false);
     const dispatch = useDispatch();
 
-
-
     useEffect(() => {
         if (wishlist && wishlist.find((i) => i._id === data._id)) {
             setClick(true);
@@ -63,90 +61,87 @@ const ProductCard = ({ data, isEvent }) => {
         }
     }
 
-
     return (
         <>
-            <div className='w-full h-[370px] bg-white rounded-lg shadow-sm p-3 relative cursor-pointer'>
-                <div className='flex justify-end'>
+            <div className="w-full h-[400px] bg-white rounded-2xl border border-slate-100 hover:border-slate-200 hover:shadow-lg transition-all duration-300 p-4 relative cursor-pointer flex flex-col justify-between shadow-sm group hover:-translate-y-1">
+                <div className="relative w-full flex items-center justify-center pt-2">
+                    <Link to={`${isEvent === true ? `/product/${data._id}?isEvent=true` : `/product/${data._id}`}`} className="w-full flex items-center justify-center">
+                        <img
+                            src={`${backend_url}${data.images && data.images[0]}`}
+                            alt="prd"
+                            className="w-full h-[180px] object-contain group-hover:scale-105 transition-transform duration-500 ease-out"
+                        />
+                    </Link>
+
+                    {/* Floating Side actions on hover */}
+                    <div className="opacity-0 group-hover:opacity-100 transition-all duration-300 absolute right-0 top-0 flex flex-col gap-2 z-10">
+                        {click ? (
+                            <button 
+                                className="w-9 h-9 bg-white shadow-md border border-slate-100 rounded-full flex items-center justify-center hover:bg-slate-50 transition active:scale-90"
+                                onClick={() => removeFromWishlistHandler(data)}
+                                title="Remove from wishlist"
+                            >
+                                <AiFillHeart size={20} color="red" />
+                            </button>
+                        ) : (
+                            <button 
+                                className="w-9 h-9 bg-white shadow-md border border-slate-100 rounded-full flex items-center justify-center hover:bg-slate-50 transition active:scale-90"
+                                onClick={() => addToWishlistHandler(data)}
+                                title="Add to wishlist"
+                            >
+                                <AiOutlineHeart size={20} color="#475569" />
+                            </button>
+                        )}
+                        <button 
+                            className="w-9 h-9 bg-white shadow-md border border-slate-100 rounded-full flex items-center justify-center hover:bg-slate-50 transition active:scale-90"
+                            onClick={() => setOpen(!open)}
+                            title="Quick view"
+                        >
+                            <AiOutlineEye size={20} color="#475569" />
+                        </button>
+                        <button 
+                            className="w-9 h-9 bg-white shadow-md border border-slate-100 rounded-full flex items-center justify-center hover:bg-slate-50 transition active:scale-90"
+                            onClick={() => addToCartHandler(data._id)}
+                            title="Add to cart"
+                        >
+                            <AiOutlineShoppingCart size={20} color="#475569" />
+                        </button>
+                    </div>
                 </div>
 
-                <Link to={`${isEvent === true ? `/product/${data._id}?isEvent=true` : `/product/${data._id}`}`}>
-                    <img
-                        src={`${backend_url}${data.images && data.images[0]}`}
-                        alt="prd"
-                        className='w-full h-[170px] object-contain'
-                    />
-                </Link>
-                <Link to={`${isEvent === true ? `/product/${data._id}?isEvent=true` : `/product/${data._id}`}`}>
-                    <h5 className={`${styles.shop_name}`} >{data.shop.name}</h5>
-                </Link>
-                <Link to={`/product/${data._id}`}>
-                    <h4 className='pb-3 font-[500]'>
-                        {data.name.length > 40 ? data.name.slice(0, 40) + '...' : data.name}
-                    </h4>
+                <div className="flex flex-col gap-1.5 mt-4">
+                    <Link to={`${isEvent === true ? `/product/${data._id}?isEvent=true` : `/product/${data._id}`}`}>
+                        <h5 className="text-[11px] uppercase tracking-wider text-slate-400 font-semibold mb-0.5">{data.shop.name}</h5>
+                    </Link>
+                    <Link to={`/product/${data._id}`}>
+                        <h4 className="text-[15px] font-semibold text-slate-800 line-clamp-2 hover:text-indigo-600 transition min-h-[44px] leading-snug">
+                            {data.name}
+                        </h4>
+                    </Link>
+                    
                     {/* Star Rating */}
-                    <div className='flex'>
+                    <div className="flex mt-1">
                         <Ratings rating={data?.ratings} />
                     </div>
 
-                    <div className='py-2 flex items-center justify-between'>
-                        <div className='flex'>
+                    <div className="pt-3 border-t border-slate-50 flex items-center justify-between">
+                        <div className="flex items-baseline">
                             <h5 className={`${styles.productDiscountPrice}`}>
                                 {data.originalPrice === 0 ? data.originalPrice : data.discountPrice}$
                             </h5>
-
                             <h4 className={`${styles.price}`}>
                                 {data.originalPrice ? data.originalPrice + " $" : null}
                             </h4>
                         </div>
-
-                        <span className="font-[400] text-[17px] text-[#68d284]">
+                        <span className="font-semibold text-[13px] text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">
                             {data?.sold_out} sold
                         </span>
                     </div>
-                </Link>
-
-                {/* side option */}
-                <div>
-                    {
-                        click ? (
-                            <AiFillHeart
-                                size={22}
-                                className="cursor-pointer absolute right-2 top-5"
-                                onClick={() => removeFromWishlistHandler(data)}
-                                color={click ? "red" : "#333"}
-                                title='Remove from wishlist'
-                            />
-                        ) : (
-                            <AiOutlineHeart
-                                size={22}
-                                className="cursor-pointer absolute right-2 top-5"
-                                onClick={() => addToWishlistHandler(data)}
-                                color={click ? "red" : "#333"}
-                                title='Add to wishlist'
-
-                            />
-                        )}
-                    <AiOutlineEye
-                        size={22}
-                        className="cursor-pointer absolute right-2 top-14"
-                        onClick={() => setOpen(!open)}
-                        color="#333"
-                        title='Quick view'
-                    />
-
-                    <AiOutlineShoppingCart
-                        size={25}
-                        className="cursor-pointer absolute right-2 top-24"
-                        onClick={() => addToCartHandler(data._id)}
-                        color="#444"
-                        title='Add to cart'
-                    />
-                    {open ? <ProductDetailsCard setOpen={setOpen} data={data} /> : null}
                 </div>
+                {open ? <ProductDetailsCard setOpen={setOpen} data={data} /> : null}
             </div>
         </>
-    )
+    );
 }
 
-export default ProductCard
+export default ProductCard;

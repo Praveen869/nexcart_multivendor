@@ -10,26 +10,25 @@ const DropDown = ({ categoriesData, setDropDown }) => {
         window.location.reload();
     };
     return (
-        <div className="pb-4 w-[270px] bg-[#fff] absolute z-30 rounded-b-md shadow-sm">
+        <div className="pb-3 w-[270px] bg-white absolute z-50 rounded-b-xl shadow-lg border border-t-0 border-slate-100 animate-fadeIn transition-all duration-300">
             {categoriesData &&
                 categoriesData.map((i, index) => (
                     <div
                         key={index}
-                        className={`${styles.noramlFlex}`}
+                        className="flex items-center px-4 py-2.5 hover:bg-slate-50 transition duration-200 cursor-pointer"
                         onClick={() => submitHandle(i)}
                     >
                         <img
                             src={i.image_Url}
                             style={{
-                                width: "25px",
-                                height: "25px",
+                                width: "20px",
+                                height: "20px",
                                 objectFit: "contain",
-                                marginLeft: "10px",
                                 userSelect: "none",
                             }}
                             alt="Drop Down img"
                         />
-                        <h3 className="m-3 cursor-pointer select-none">{i.title}</h3>
+                        <h3 className="ml-3 text-sm text-slate-700 font-[500] cursor-pointer select-none">{i.title}</h3>
                     </div>
                 ))}
         </div>

@@ -335,21 +335,21 @@ const SellerInbox = ({
   return (
     <div className="w-[full] min-h-full flex flex-col justify-between p-5">
       {/* message header */}
-      <div className="w-full flex p-3 items-center justify-between bg-slate-200">
-        <div className="flex">
+      <div className="w-full flex p-4 px-6 items-center justify-between bg-slate-950 text-white rounded-t-2xl shadow-md">
+        <div className="flex items-center gap-3">
           <img
             src={userData?.avatar ? `${backend_url}${userData.avatar}` : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
             alt=""
-            className="w-[60px] h-[60px] rounded-full object-cover"
+            className="w-[50px] h-[50px] rounded-full object-cover border border-slate-800"
           />
-          <div className="pl-3">
-            <h1 className="text-[18px] font-[600]">{userData?.name}</h1>
-            <h1>{activeStatus ? "Active Now" : ""}</h1>
+          <div className="pl-1">
+            <h1 className="text-[16px] font-semibold tracking-tight text-white">{userData?.name}</h1>
+            <h1 className="text-xs text-emerald-400 font-medium">{activeStatus ? "Active Now" : "Offline"}</h1>
           </div>
         </div>
         <AiOutlineArrowRight
           size={20}
-          className="cursor-pointer"
+          className="cursor-pointer text-slate-300 hover:text-white transition"
           onClick={() => setOpen(false)}
         />
       </div>
