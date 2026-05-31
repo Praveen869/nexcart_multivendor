@@ -2,8 +2,6 @@ const express = require("express");
 const path = require("path");
 const router = express.Router();
 const fs = require("fs");
-const jwt = require("jsonwebtoken");
-const sendMail = require("../utils/sendMail");
 const Shop = require("../model/shop");
 const { isAuthenticated, isSeller, isAdmin } = require("../middleware/auth");
 const { upload } = require("../multer");
@@ -12,7 +10,7 @@ const ErrorHandler = require("../utils/ErrorHandler");
 
 const sendShopToken = require("../utils/shopToken");
 
-// create shop
+// create shop — directly without email activation
 router.post("/create-shop", upload.single("file"), async (req, res, next) => {
   try {
     const { email } = req.body;
@@ -25,20 +23,19 @@ router.post("/create-shop", upload.single("file"), async (req, res, next) => {
         fs.unlink(filePath, (err) => {
           if (err) {
             console.log(err);
-            res.status(500).json({ message: "Error deleting file" });
           }
         });
       }
-      return next(new ErrorHandler("User already exists", 400));
+      return next(new ErrorHandler("Shop already exists with this email", 400));
     }
 
     let fileUrl = "";
     if (req.file) {
-      const filename = req.file.filename;
-      fileUrl = path.join(filename);
+      fileUrl = path.join(req.file.filename);
     }
 
-    const seller = {
+    // Seedha shop create karo — koi email activation nahi
+    const shop = await Shop.create({
       name: req.body.name,
       email: email,
       password: req.body.password,
@@ -46,36 +43,13 @@ router.post("/create-shop", upload.single("file"), async (req, res, next) => {
       address: req.body.address,
       phoneNumber: req.body.phoneNumber,
       zipCode: req.body.zipCode,
-    };
+    });
 
-    const activationToken = createActivationToken(seller);
-
-    const activationUrl = `${process.env.FRONTEND_URL}/seller/activation/${activationToken}`;
-
-    try {
-      await sendMail({
-        email: seller.email,
-        subject: "Activate your Shop",
-        message: `Hello ${seller.name}, please click on the link to activate your shop: ${activationUrl}`,
-      });
-      res.status(201).json({
-        success: true,
-        message: `please check your email:- ${seller.email} to activate your shop!`,
-      });
-    } catch (error) {
-      return next(new ErrorHandler(error.message, 500));
-    }
+    sendShopToken(shop, 201, res);
   } catch (error) {
     return next(new ErrorHandler(error.message, 400));
   }
 });
-
-// create activation token
-const createActivationToken = (seller) => {
-  return jwt.sign(seller, process.env.ACTIVATION_SECRET, {
-    expiresIn: "5m",
-  });
-};
 
 // activate user
 router.post(

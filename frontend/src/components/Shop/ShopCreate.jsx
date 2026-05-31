@@ -6,11 +6,13 @@ import axios from "axios";
 import { server } from "../../server";
 import { toast } from "react-toastify";
 import { RxAvatar } from 'react-icons/rx';
+import { useDispatch } from 'react-redux';
 
 
 const ShopCreate = () => {
 
     const navigate = useNavigate()
+    const dispatch = useDispatch();
     const [email, setEmail] = useState("");
     const [name, setName] = useState("");
     const [phoneNumber, setPhoneNumber] = useState();
@@ -39,22 +41,22 @@ const ShopCreate = () => {
         axios
             .post(`${server}/shop/create-shop`, newForm, config)
             .then((res) => {
-                toast.success(res.data.message);
-                setName("");
-                setEmail("");
-                setPassword("");
-                setZipCode("");
-                setAddress("");
-                setPhoneNumber("");
+                // seller_token localStorage mein save karo
+                if (res.data.token) {
+                    localStorage.setItem("seller_token", res.data.token);
+                }
+                // Redux mein seller set karo
+                dispatch({
+                    type: "LoadSellerSuccess",
+                    payload: res.data.user,
+                });
+                toast.success("Shop registered successfully! Welcome 🎉");
                 setLoading(false);
-                setTimeout(() => {
-                    navigate("/shop-login");
-                    window.location.reload();
-                }, 2000);
+                navigate("/dashboard");
             })
             .catch((error) => {
                 setLoading(false);
-                toast.error(error.response?.data?.message || "Connection timed out. Please try again.");
+                toast.error(error.response?.data?.message || "Registration failed. Please try again.");
             });
     }
 
