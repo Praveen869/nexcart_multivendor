@@ -18,25 +18,15 @@ const Signup = () => {
 
     // const navigate = useNavigate()
 
-    // fule upload
-    const handleFileInputChange = (e) => {
-        const file = e.target.files[0];
-        setAvatar(file);
-    }
-
     const handleSubmit = (e) => {
         e.preventDefault();
-        const config = { headers: { "Content-Type": "multipart/form-data" } };
-        // meaning of uper line is that we are creating a new object with the name of config and the value of config is {headers:{'Content-Type':'multipart/form-data'}}  
+        const config = { headers: { "Content-Type": "application/json" } };
 
-        const newForm = new FormData();
-        // meaning of uper line is that we are creating a new form data object and we are sending it to the backend with the name of newForm and the value of newForm is new FormData()
-        newForm.append("file", avatar);
-        // meanin of newForm.append("file",avatar) is that we are sending a file to the backend with the name of file and the value of the file is avatar
-        newForm.append("name", name);
-        newForm.append("email", email);
-        newForm.append("password", password)
-
+        const newForm = {
+            name: name,
+            email: email,
+            password: password
+        };
 
         axios
             .post(`${server}/user/create-user`, newForm, config)
@@ -45,7 +35,6 @@ const Signup = () => {
                 setName("");
                 setEmail("");
                 setPassword("");
-                setAvatar();
             }).catch((error) => {
                 toast.error(error.response.data.message);
             })
@@ -137,41 +126,7 @@ const Signup = () => {
                         </div>
                         {/* Password end */}
 
-                        {/* Avatar start */}
-                        <div>
-                            <label htmlFor="avatar"
-                                className="block text-sm font-medium text-gray-700"
-                            ></label>
-                            <div className='mt-2 flex items-center'>
-                                <span className='inline-block h-8 w-8 rounded-full overflow-hidden'>
-                                    {
-                                        avatar ? (
-                                            <img
-                                                src={URL.createObjectURL(avatar)}
-                                                alt="avatar"
-                                                className="h-full w-full object-cover rounded-full"
-                                            />
-                                        ) : (
-                                            <RxAvatar className="h-8 w-8" />
-                                        )}
-                                </span>
-                                {/* Input file start */}
-                                <label htmlFor="file-input"
-                                    className="ml-5 flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
-                                >
-                                    <span>Upload a file</span>
-                                    <input type="file"
-                                        name='avatar'
-                                        id='file-input'
-                                        accept=".jpg,.jpeg,.png"
-                                        onChange={handleFileInputChange}
-                                        className="sr-only"
-                                    />
-                                </label>
-                                {/* Input file end */}
-                            </div>
-                        </div>
-                        {/* Avatar end */}
+
 
 
                         <div>

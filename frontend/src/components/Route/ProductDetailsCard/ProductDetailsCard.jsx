@@ -95,9 +95,9 @@ const ProductDetailsCard = ({ setOpen, data }) => {
                                             <Link to={`/shop/preview/${data.shop._id}`} className="flex">
 
                                                 <img
-                                                    src={`${backend_url}${data?.shop?.avatar}`}
+                                                    src={data?.shop?.avatar ? `${backend_url}${data.shop.avatar}` : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
                                                     alt=""
-                                                    className='w-[50px] h-[50px] rounded-full mr-2'
+                                                    className='w-[50px] h-[50px] rounded-full mr-2 object-cover'
                                                 />
                                                 <div>
                                                     <h3 className={`${styles.shop_name}`}>

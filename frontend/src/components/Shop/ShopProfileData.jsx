@@ -112,8 +112,8 @@ const ShopProfileData = ({ isOwner }) => {
                         allReviews.map((item, index) => (
                             <div className="w-full flex my-4">
                                 <img
-                                    src={`${backend_url}/${item.user.avatar}`}
-                                    className="w-[50px] h-[50px] rounded-full"
+                                    src={item?.user?.avatar ? `${backend_url}/${item.user.avatar}` : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
+                                    className="w-[50px] h-[50px] rounded-full object-cover"
                                     alt=""
                                 />
                                 <div className="pl-2">

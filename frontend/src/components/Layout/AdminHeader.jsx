@@ -43,7 +43,7 @@ const AdminHeader = () => {
             />
           </Link>
           <img
-            src={`${backend_url}${user?.avatar}`}
+            src={user?.avatar ? `${backend_url}${user.avatar}` : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
             alt=""
             className="w-[50px] h-[50px] rounded-full object-cover"
           />

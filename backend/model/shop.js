@@ -34,7 +34,6 @@ const shopSchema = new mongoose.Schema({
   },
   avatar: {
     type: String,
-    required: true,
   },
   zipCode: {
     type: Number,
