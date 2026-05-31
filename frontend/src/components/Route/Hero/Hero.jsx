@@ -12,11 +12,10 @@ const Hero = () => {
             }}
         >
             {/* Elegant overlay to enhance readability and premium feel */}
-            <div className="absolute inset-0 bg-gradient-to-r from-pink-50/60 via-white/40 to-transparent pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-r from-white/85 via-white/50 to-transparent pointer-events-none" />
 
-            <div className={`${styles.section} relative z-10 w-[95%] 800px:w-[55%] py-12`}>
-                {/* Floating Shady Pink Glassmorphic Card */}
-                <div className="bg-white/75 backdrop-blur-md border border-pink-100/50 rounded-3xl shadow-2xl shadow-pink-300/10 p-8 800px:p-12 max-w-[620px] transform hover:scale-[1.01] transition-all duration-500">
+            <div className={`${styles.section} relative z-10 w-[95%] 800px:w-[55%] py-12 800px:pl-0`}>
+                <div className="max-w-[620px]">
                     <span className="text-pink-500 text-xs 800px:text-sm font-semibold uppercase tracking-widest block mb-3 font-sans">
                         Premium Curation
                     </span>
@@ -28,7 +27,7 @@ const Hero = () => {
                             Home Decoration
                         </span>
                     </h1>
-                    <p className="pt-5 text-[14px] 800px:text-[16px] font-sans font-normal text-slate-600 leading-relaxed">
+                    <p className="pt-5 text-[14px] 800px:text-[16px] font-sans font-normal text-slate-700 leading-relaxed max-w-[520px]">
                         Elevate your living space with our thoughtfully designed, premium quality artisanal home accents. Discover timeless aesthetics curated for the modern collector.
                     </p>
                     <Link to="/products" className="inline-block mt-8">
@@ -42,4 +41,4 @@ const Hero = () => {
     )
 }
 
-export default Hero
+export default Hero

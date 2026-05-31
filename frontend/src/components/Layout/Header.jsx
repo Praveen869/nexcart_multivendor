@@ -56,7 +56,7 @@ const Header = ({ activeHeading }) => {
 
   return (
     <>
-      <div className="w-full bg-gradient-to-r from-[#e2e9f3] via-[#f7fafc] to-[#e2e9f3] shadow-[inset_0_1px_4px_rgba(255,255,255,0.9)] py-4 border-b border-slate-200/40 hidden 800px:block">
+      <div className="w-full bg-gradient-to-r from-[#f7e2e6] via-[#fffbf3] to-[#eed2d7] shadow-[inset_0_2px_5px_rgba(255,255,255,0.95)] py-4 border-b border-slate-200/40 hidden 800px:block">
         <div className={`${styles.section} flex items-center justify-between`}>
           <div>
             <Link to="/">
@@ -131,15 +131,11 @@ const Header = ({ activeHeading }) => {
             <div className="relative h-[60px] mt-[10px] w-[270px] hidden 1000px:block">
               <BiMenuAltLeft size={22} className="absolute top-5 left-4 text-indigo-600 z-10" />
               <button
-                className={`h-[100%] w-full flex justify-between items-center pl-12 bg-slate-50 font-sans text-[14px] font-semibold text-slate-800 select-none rounded-t-xl shadow-xs hover:bg-slate-100 transition cursor-pointer border border-b-0 border-slate-200/50`}
+                className={`h-[100%] w-full flex justify-between items-center pl-12 pr-4 bg-slate-50 font-sans text-[14px] font-semibold text-slate-800 select-none rounded-t-xl shadow-xs hover:bg-slate-100 transition cursor-pointer border border-b-0 border-slate-200/50`}
               >
-                All Categories
+                <span>All Categories</span>
+                <IoIosArrowDown size={16} className="text-slate-500" />
               </button>
-              <IoIosArrowDown
-                size={16}
-                className="absolute right-4 top-5.5 cursor-pointer text-slate-500 z-10"
-                onClick={() => setDropDown(!dropDown)}
-              />
               {dropDown ? (
                 <DropDown
                   categoriesData={categoriesData}
