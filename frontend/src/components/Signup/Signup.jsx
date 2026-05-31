@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import styles from "../../styles/styles";
 import { Link, useNavigate } from "react-router-dom";
-import { RxAvatar } from "react-icons/rx";
 import axios from "axios";
 import { server } from "../../server";
 import { toast } from "react-toastify";
@@ -14,10 +13,8 @@ const Signup = () => {
     const [name, setName] = useState("");
     const [password, setPassword] = useState("");
     const [visible, setVisible] = useState(false);
-    const [avatar, setAvatar] = useState(null);
     const [loading, setLoading] = useState(false);
-
-    // const navigate = useNavigate()
+    const navigate = useNavigate();
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -33,14 +30,15 @@ const Signup = () => {
         axios
             .post(`${server}/user/create-user`, newForm, config)
             .then((res) => {
-                toast.success(res.data.message);
+                toast.success("Account created successfully! Please log in.");
                 setName("");
                 setEmail("");
                 setPassword("");
                 setLoading(false);
+                navigate("/login");
             }).catch((error) => {
                 setLoading(false);
-                toast.error(error.response?.data?.message || "Connection timed out. Please try again.");
+                toast.error(error.response?.data?.message || "Something went wrong. Please try again.");
             })
     }
 
@@ -48,7 +46,7 @@ const Signup = () => {
         <div className='min-h-screen bg-slate-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8 font-sans'>
             <div className='sm:mx-auto sm:w-full sm:max-w-md'>
                 <h2 className="mt-6 text-center text-3xl font-extrabold text-slate-900 tracking-tight">
-                    Register as new user
+                    Create your account
                 </h2>
             </div>
             <div className='mt-8 sm:mx-auto sm:w-full sm:max-w-md'>
@@ -145,7 +143,7 @@ const Signup = () => {
                                             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                                             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                         </svg>
-                                        Sending Activation Email...
+                                        Creating Account...
                                     </div>
                                 ) : (
                                     "Submit"
