@@ -5,10 +5,12 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { server } from "../../server";
 import { toast } from "react-toastify";
+import { useDispatch } from 'react-redux';
 
 
 const ShopLogin = () => {
     const navigate = useNavigate()
+    const dispatch = useDispatch();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("")
     const [visible, setVisible] = useState(false)
@@ -28,9 +30,17 @@ const ShopLogin = () => {
                 },
                 { withCredentials: true }
             ).then((res) => {
-                toast.success("Login Sucess!")
+                // seller_token ko localStorage mein save karo (cross-site cookie fallback)
+                if (res.data.token) {
+                    localStorage.setItem("seller_token", res.data.token);
+                }
+                // Redux store mein seller seedha set karo
+                dispatch({
+                    type: "LoadSellerSuccess",
+                    payload: res.data.user,
+                });
+                toast.success("Login Success!")
                 navigate("/dashboard")
-                window.location.reload(true);
             })
             .catch((err) => {
                 toast.error(err.response.data.message);

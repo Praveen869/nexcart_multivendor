@@ -5,10 +5,12 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { server } from "../../server";
 import { toast } from "react-toastify";
+import { useDispatch } from 'react-redux';
 
 
 const Login = () => {
     const navigate = useNavigate()
+    const dispatch = useDispatch();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("")
     const [visible, setVisible] = useState(false)
@@ -25,9 +27,17 @@ const Login = () => {
                 },
                 { withCredentials: true }
             ).then((res) => {
-                toast.success("Login Sucess!")
+                // Token ko localStorage mein save karo (cross-site cookie fallback)
+                if (res.data.token) {
+                    localStorage.setItem("token", res.data.token);
+                }
+                // Redux store mein user seedha set karo (page reload ki zaroorat nahi)
+                dispatch({
+                    type: "LoadUserSuccess",
+                    payload: res.data.user,
+                });
+                toast.success("Login Success!")
                 navigate("/")
-                window.location.reload(true);
             })
             .catch((err) => {
                 toast.error(err.response.data.message);

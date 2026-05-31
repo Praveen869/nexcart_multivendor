@@ -7,9 +7,15 @@ export const loadUser = () => async (dispatch) => {
     dispatch({
       type: "LoadUserRequest",
     });
-    const { data } = await axios.get(`${server}/user/getuser`, {
+
+    // Cookie se try karo, agar fail ho to localStorage token se header mein bhejo
+    const token = localStorage.getItem("token");
+    const config = {
       withCredentials: true,
-    });
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
+    };
+
+    const { data } = await axios.get(`${server}/user/getuser`, config);
     dispatch({
       type: "LoadUserSuccess",
       payload: data.user,
@@ -17,7 +23,7 @@ export const loadUser = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: "LoadUserFail",
-      payload: error.response.data.message,
+      payload: error.response?.data?.message || "Authentication failed",
     });
   }
 };
@@ -28,9 +34,15 @@ export const loadSeller = () => async (dispatch) => {
     dispatch({
       type: "LoadSellerRequest",
     });
-    const { data } = await axios.get(`${server}/shop/getSeller`, {
+
+    // Cookie se try karo, agar fail ho to localStorage seller_token se header mein bhejo
+    const seller_token = localStorage.getItem("seller_token");
+    const config = {
       withCredentials: true,
-    });
+      headers: seller_token ? { Authorization: `Bearer ${seller_token}` } : {},
+    };
+
+    const { data } = await axios.get(`${server}/shop/getSeller`, config);
     dispatch({
       type: "LoadSellerSuccess",
       payload: data.seller,
@@ -38,7 +50,7 @@ export const loadSeller = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: "LoadSellerFail",
-      payload: error.response.data.message,
+      payload: error.response?.data?.message || "Authentication failed",
     });
   }
 };

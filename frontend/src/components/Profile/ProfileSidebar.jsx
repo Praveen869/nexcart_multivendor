@@ -13,10 +13,11 @@ import { TbAddressBook } from "react-icons/tb";
 import axios from "axios";
 import { server } from "../../server";
 import { toast } from "react-toastify";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 const ProfileSidebar = ({ active, setActive }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const { user } = useSelector((state) => state.user);
 
@@ -24,8 +25,11 @@ const ProfileSidebar = ({ active, setActive }) => {
     axios
       .get(`${server}/user/logout`, { withCredentials: true })
       .then((res) => {
+        // localStorage se token clear karo
+        localStorage.removeItem("token");
+        // Redux store mein user clear karo
+        dispatch({ type: "LoadUserFail", payload: null });
         toast.success(res.data.message);
-        window.location.reload(true);
         navigate("/login");
       })
       .catch((error) => {
